@@ -87,6 +87,25 @@ void print_shortest_path(int shortest_path[], int n) {
 		cout << i << " : " << shortest_path[i] << endl;
 	cout << endl;
 }
+void sho_pas(int src,int shortest_path[], vector<vector<int>>& grr,bool visited[]) {
+	queue<int> q;
+	q.push(src);
+	shortest_path[src] = 0;
+	for (int i = 0; i < grr.size(); i++)
+		shortest_path[i] = 0;
+	visited[src] = true;
+	while (!q.empty()) {
+		int src = q.front();
+		q.pop();
+		for (int i = 0; i < grr[src].size(); i++) {
+			if (!visited[grr[src][i]]) {
+				q.push(grr[src][i]);
+				visited[grr[src][i]] = true;
+				shortest_path[grr[src][i]] += shortest_path[src] + 1;
+			}
+		}
+	}
+}
 int main() {
 	int n, m, src;
 	cin >> n >> m >> src;
@@ -111,6 +130,8 @@ int main() {
 	empt_visted(visted, n);
 	cout << "**************** BFS USING RECURSION ***************" << endl;
 	bfs_rec(src, grr, visted);
+	empt_visted(visted, n);
+	sho_pas(src, shortest_path, grr, visted);
 	empt_visted(visted, n);
 	print_shortest_path(shortest_path, n);
 	delete[] visted, shortest_path;
